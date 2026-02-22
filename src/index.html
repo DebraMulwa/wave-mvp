@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Wave | Smart Contracts</title>
 
-    <!-- Google Font (Stripe-ish vibe) -->
+    <!-- Google Font -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
 
@@ -19,13 +19,15 @@
 
     <style>
       :root {
-        --wave-bg: #f6f7fb;
+        --wave-bg: #f4f7ff;
         --wave-card: #ffffff;
-        --wave-border: #e5e7eb;
-        --wave-primary: #5368f5;
-        --wave-primary-soft: rgba(83, 104, 245, 0.12);
-        --wave-text-main: #0b1f33;
-        --wave-text-muted: #6b7280;
+        --wave-border: #dfe6f2;
+        --wave-primary: #215be4;
+        --wave-primary-soft: rgba(33, 91, 228, 0.12);
+        --wave-accent: #fac2bd;
+        --wave-muted-accent: #9bada9;
+        --wave-text-main: #15263f;
+        --wave-text-muted: #627187;
         --wave-success: #0bbf7b;
         --wave-radius-lg: 16px;
         --wave-radius-md: 12px;
@@ -37,25 +39,19 @@
 
       body {
         margin: 0;
-        font-family:
-          "Inter",
-          system-ui,
-          -apple-system,
-          BlinkMacSystemFont,
-          "Segoe UI",
-          sans-serif;
+        font-family: "Manrope", "Segoe UI", sans-serif;
         background: linear-gradient(
           180deg,
-          #f7f8fc 0%,
-          #f2f4f9 50%,
-          #f7f8fc 100%
+          #f8faff 0%,
+          #f1f5ff 52%,
+          #fdfdff 100%
         );
         color: var(--wave-text-main);
       }
 
       /* Top Nav */
       .wave-nav {
-        background: #ffffffee;
+        background: rgba(255, 255, 255, 0.9);
         backdrop-filter: blur(18px);
         border-bottom: 1px solid var(--wave-border);
         padding: 0.6rem 1.5rem;
@@ -117,11 +113,11 @@
       }
 
       .banner {
-        background: linear-gradient(135deg, #2563eb, #1d4ed8);
+        background: linear-gradient(138deg, #215be4 0%, #426fe5 48%, #9bada9 100%);
         color: #fff;
         border-radius: 18px;
         padding: 18px 20px;
-        box-shadow: 0 12px 32px rgba(37, 99, 235, 0.22);
+        box-shadow: 0 18px 36px rgba(33, 91, 228, 0.25);
         display: grid;
         grid-template-columns: 1fr auto;
         gap: 14px;
@@ -177,7 +173,7 @@
         padding: 10px 14px;
         font-weight: 700;
         font-size: 0.9rem;
-        color: #1e3a8a;
+        color: #1d3a8e;
         background: #fff;
         box-shadow: 0 12px 22px rgba(255, 255, 255, 0.32);
         cursor: pointer;
@@ -187,9 +183,9 @@
       }
 
       .banner-btn.secondary {
-        background: rgba(255, 255, 255, 0.16);
-        color: #e0e7ff;
-        border: 1px solid rgba(255, 255, 255, 0.35);
+        background: rgba(250, 194, 189, 0.2);
+        color: #ffe8e5;
+        border: 1px solid rgba(250, 194, 189, 0.45);
         box-shadow: none;
       }
 
@@ -211,7 +207,7 @@
         background: var(--wave-card);
         border-radius: var(--wave-radius-lg);
         border: 1px solid var(--wave-border);
-        box-shadow: 0 14px 35px rgba(15, 23, 42, 0.04);
+        box-shadow: 0 14px 35px rgba(21, 38, 63, 0.07);
         padding: 1.2rem 1.25rem;
       }
 
@@ -242,8 +238,8 @@
 
       .wave-btn-primary {
         border-radius: 12px;
-        background: linear-gradient(135deg, #5368f5, #5e5fe9);
-        border: 1px solid #4f46e5;
+        background: linear-gradient(135deg, #215be4, #4d79e9);
+        border: 1px solid #215be4;
         color: #fff;
         font-size: 0.9rem;
         font-weight: 600;
@@ -251,7 +247,7 @@
         display: inline-flex;
         align-items: center;
         gap: 0.35rem;
-        box-shadow: 0 10px 20px rgba(79, 70, 229, 0.25);
+        box-shadow: 0 10px 20px rgba(33, 91, 228, 0.25);
         transition:
           transform 0.07s ease,
           box-shadow 0.07s ease,
@@ -259,9 +255,9 @@
       }
 
       .wave-btn-primary:hover {
-        background: #4f46e5;
+        background: #1d50c8;
         transform: translateY(-1px);
-        box-shadow: 0 12px 22px rgba(79, 70, 229, 0.3);
+        box-shadow: 0 12px 22px rgba(33, 91, 228, 0.35);
       }
 
       .wave-btn-primary:active {
@@ -322,7 +318,7 @@
         border: 1px solid var(--wave-border);
         border-radius: 14px;
         padding: 14px;
-        box-shadow: 0 10px 24px rgba(15, 23, 42, 0.04);
+        box-shadow: 0 10px 24px rgba(21, 38, 63, 0.06);
         display: grid;
         grid-template-columns: auto 1fr;
         gap: 10px;
@@ -350,7 +346,7 @@
       .brand-card {
         position: relative;
         overflow: hidden;
-        background: linear-gradient(145deg, #0b2331, #0f3247 40%, #5a1f0f);
+        background: linear-gradient(145deg, #1a3d94, #215be4 45%, #9bada9);
         color: #fff;
         border-radius: 18px;
         padding: 16px 18px;
@@ -367,7 +363,7 @@
         inset: 0;
         background: linear-gradient(
           120deg,
-          rgba(255, 140, 66, 0.28),
+          rgba(250, 194, 189, 0.32),
           rgba(255, 255, 255, 0.06)
         );
         mix-blend-mode: screen;
@@ -443,7 +439,7 @@
         border: 1px solid var(--wave-border);
         border-radius: 16px;
         padding: 16px;
-        box-shadow: 0 14px 32px rgba(15, 23, 42, 0.05);
+        box-shadow: 0 14px 32px rgba(21, 38, 63, 0.07);
       }
 
       .board-header {
@@ -473,7 +469,7 @@
       }
 
       .board-col {
-        background: #f8fafc;
+        background: #f9fbff;
         border: 1px solid var(--wave-border);
         border-radius: 16px;
         padding: 14px;
@@ -495,8 +491,8 @@
         padding: 4px 8px;
         border-radius: 999px;
         background: var(--wave-primary-soft);
-        color: #4f46e5;
-        border: 1px solid #e0e7ff;
+        color: #1f4fbe;
+        border: 1px solid #cddcff;
         font-weight: 700;
       }
 
@@ -554,7 +550,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background: rgba(248, 250, 252, 0.85);
+        background: rgba(244, 247, 255, 0.9);
         z-index: 999;
       }
 
@@ -579,18 +575,18 @@
         color: var(--wave-text-muted);
       }
       .fundTaskBtn {
-        background: #f0f4ff;
-        border: 1px solid #c7d2fe;
+        background: rgba(33, 91, 228, 0.1);
+        border: 1px solid rgba(33, 91, 228, 0.28);
         padding: 6px 14px;
         border-radius: 8px;
         font-size: 0.8rem;
-        color: #1e3a8a;
+        color: #1d50c8;
         transition: 0.2s;
       }
 
       .fundTaskBtn:hover {
-        background: #e0e7ff;
-        border-color: #a5b4fc;
+        background: rgba(33, 91, 228, 0.18);
+        border-color: rgba(33, 91, 228, 0.4);
       }
 
       .fundTaskBtn:active {
@@ -677,7 +673,7 @@
             <div class="summary-card">
               <div
                 class="summary-icon"
-                style="background: linear-gradient(135deg, #4f46e5, #7c3aed)"
+                style="background: linear-gradient(135deg, #215be4, #4d79e9)"
               >
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M5 4h14v2H5zm0 7h14v2H5zm0 7h14v2H5z" />
@@ -691,7 +687,7 @@
             <div class="summary-card">
               <div
                 class="summary-icon"
-                style="background: linear-gradient(135deg, #0ea5e9, #38bdf8)"
+                style="background: linear-gradient(135deg, #9bada9, #6f8580)"
               >
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                   <path
@@ -707,7 +703,7 @@
             <div class="summary-card">
               <div
                 class="summary-icon"
-                style="background: linear-gradient(135deg, #10b981, #22c55e)"
+                style="background: linear-gradient(135deg, #fac2bd, #f0a59d)"
               >
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                   <path
