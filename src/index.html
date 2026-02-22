@@ -7,7 +7,7 @@
 
     <!-- Google Font -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
 
@@ -39,7 +39,7 @@
 
       body {
         margin: 0;
-        font-family: "Manrope", "Segoe UI", sans-serif;
+        font-family: "Montserrat", "Segoe UI", sans-serif;
         background: linear-gradient(
           180deg,
           #f8faff 0%,
@@ -659,6 +659,7 @@
         display: grid;
         gap: 8px;
         margin-top: 6px;
+        width: 100%;
       }
 
       .wave-menu-item {
@@ -669,6 +670,11 @@
         padding: 10px 12px;
         font-size: 0.9rem;
         font-weight: 700;
+        width: 100%;
+        box-sizing: border-box;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
 
       .wave-menu-item.active {
@@ -680,10 +686,34 @@
         background: #17253b;
         border-color: #2a3b58;
         color: #d0dcf2;
+        width: 100%;
+        justify-content: center;
       }
 
       .wave-account-dot {
         background: #9bada9;
+      }
+
+      .banner-account-chip {
+        font-size: 0.8rem;
+        padding: 0.45rem 0.9rem;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.9);
+        border: 1px solid rgba(255, 255, 255, 0.95);
+        color: #173b96;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        max-width: 100%;
+      }
+
+      .banner-account-chip #account {
+        display: inline-block;
+        max-width: 220px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        vertical-align: bottom;
       }
 
       main.wave-main {
@@ -756,9 +786,7 @@
 
         <div class="d-flex align-items-center gap-2">
           <div class="wave-account-chip">
-            <span class="wave-account-dot"></span>
-            <span class="text-muted">Account</span>
-            <span id="account" style="font-weight: 500">–</span>
+            <span>Hello, Brand</span>
           </div>
         </div>
       </div>
@@ -782,7 +810,11 @@
               <div class="banner-meta">Brand wallet · secure balance</div>
             </div>
             <div class="banner-actions">
-              <button class="banner-btn secondary">Hi, Brand</button>
+              <div class="banner-account-chip">
+                <span class="wave-account-dot"></span>
+                <span>Connected wallet</span>
+                <span id="account" style="font-weight: 700">–</span>
+              </div>
             </div>
           </div>
 
