@@ -1,0 +1,1019 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Wave | Smart Contracts</title>
+
+    <!-- Google Font (Stripe-ish vibe) -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Bootstrap -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --wave-bg: #f6f7fb;
+        --wave-card: #ffffff;
+        --wave-border: #e5e7eb;
+        --wave-primary: #5368f5;
+        --wave-primary-soft: rgba(83, 104, 245, 0.12);
+        --wave-text-main: #0b1f33;
+        --wave-text-muted: #6b7280;
+        --wave-success: #0bbf7b;
+        --wave-radius-lg: 16px;
+        --wave-radius-md: 12px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family:
+          "Inter",
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          sans-serif;
+        background: linear-gradient(
+          180deg,
+          #f7f8fc 0%,
+          #f2f4f9 50%,
+          #f7f8fc 100%
+        );
+        color: var(--wave-text-main);
+      }
+
+      /* Top Nav */
+      .wave-nav {
+        background: #ffffffee;
+        backdrop-filter: blur(18px);
+        border-bottom: 1px solid var(--wave-border);
+        padding: 0.6rem 1.5rem;
+      }
+
+      .wave-logo {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--wave-text-main);
+        font-size: 0.9rem;
+      }
+
+      .wave-pill {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.15rem 0.55rem;
+        border-radius: 999px;
+        background: var(--wave-primary-soft);
+        color: var(--wave-primary);
+        font-size: 0.7rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .wave-account-chip {
+        font-size: 0.78rem;
+        padding: 0.25rem 0.8rem;
+        border-radius: 999px;
+        background: #0a254003;
+        border: 1px solid var(--wave-border);
+        display: flex;
+        align-items: center;
+        gap: 0.35rem;
+        color: var(--wave-text-muted);
+      }
+
+      .wave-account-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 999px;
+        background: #16a34a;
+      }
+
+      /* Main layout */
+      main.wave-main {
+        margin-top: 70px;
+        min-height: 80vh;
+        padding: 1.5rem;
+      }
+
+      .wave-container {
+        max-width: 1160px;
+        margin: 0 auto;
+      }
+
+      .banner {
+        background: linear-gradient(135deg, #2563eb, #1d4ed8);
+        color: #fff;
+        border-radius: 18px;
+        padding: 18px 20px;
+        box-shadow: 0 12px 32px rgba(37, 99, 235, 0.22);
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 14px;
+        align-items: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .banner::after {
+        content: "";
+        position: absolute;
+        width: 220px;
+        height: 220px;
+        background: radial-gradient(
+          circle,
+          rgba(255, 255, 255, 0.14),
+          transparent 55%
+        );
+        top: -40px;
+        right: -60px;
+      }
+
+      .banner-title {
+        font-size: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        opacity: 0.9;
+        margin: 0 0 4px;
+      }
+
+      .banner-balance {
+        font-size: 2.4rem;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        margin: 0;
+      }
+
+      .banner-meta {
+        margin: 4px 0 0;
+        color: rgba(255, 255, 255, 0.85);
+        font-size: 0.95rem;
+      }
+
+      .banner-actions {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .banner-btn {
+        border: none;
+        border-radius: 999px;
+        padding: 10px 14px;
+        font-weight: 700;
+        font-size: 0.9rem;
+        color: #1e3a8a;
+        background: #fff;
+        box-shadow: 0 12px 22px rgba(255, 255, 255, 0.32);
+        cursor: pointer;
+        transition:
+          transform 0.1s ease,
+          box-shadow 0.1s ease;
+      }
+
+      .banner-btn.secondary {
+        background: rgba(255, 255, 255, 0.16);
+        color: #e0e7ff;
+        border: 1px solid rgba(255, 255, 255, 0.35);
+        box-shadow: none;
+      }
+
+      .banner-btn:hover {
+        transform: translateY(-1px);
+      }
+
+      .wave-status-tag {
+        font-size: 0.75rem;
+        color: var(--wave-success);
+        background: #ecfdf5;
+        padding: 0.25rem 0.55rem;
+        border-radius: 999px;
+        font-weight: 500;
+      }
+
+      /* Cards */
+      .wave-card {
+        background: var(--wave-card);
+        border-radius: var(--wave-radius-lg);
+        border: 1px solid var(--wave-border);
+        box-shadow: 0 14px 35px rgba(15, 23, 42, 0.04);
+        padding: 1.2rem 1.25rem;
+      }
+
+      .wave-card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.8rem;
+      }
+
+      .wave-card-title {
+        font-size: 0.95rem;
+        font-weight: 600;
+      }
+
+      .wave-card-kicker {
+        font-size: 0.78rem;
+        color: var(--wave-text-muted);
+      }
+
+      /* Create task */
+      .wave-create-form input[type="text"] {
+        border-radius: 999px;
+        border: 1px solid var(--wave-border);
+        padding: 0.55rem 0.9rem;
+        font-size: 0.9rem;
+      }
+
+      .wave-btn-primary {
+        border-radius: 12px;
+        background: linear-gradient(135deg, #5368f5, #5e5fe9);
+        border: 1px solid #4f46e5;
+        color: #fff;
+        font-size: 0.9rem;
+        font-weight: 600;
+        padding: 0.55rem 1.05rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        box-shadow: 0 10px 20px rgba(79, 70, 229, 0.25);
+        transition:
+          transform 0.07s ease,
+          box-shadow 0.07s ease,
+          background 0.1s ease;
+      }
+
+      .wave-btn-primary:hover {
+        background: #4f46e5;
+        transform: translateY(-1px);
+        box-shadow: 0 12px 22px rgba(79, 70, 229, 0.3);
+      }
+
+      .wave-btn-primary:active {
+        transform: translateY(0);
+        box-shadow: 0 8px 16px rgba(79, 70, 229, 0.25);
+      }
+
+      .wave-icon-plus {
+        width: 16px;
+        height: 16px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+      }
+
+      .action-row {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        flex-wrap: wrap;
+        margin-top: 10px;
+      }
+
+      .action-row input {
+        flex: 1;
+        min-width: 220px;
+        border-radius: 12px;
+        border: 1px solid var(--wave-border);
+        padding: 0.6rem 0.85rem;
+        font-size: 0.95rem;
+      }
+
+      .field-label {
+        font-weight: 700;
+        font-size: 0.95rem;
+        margin-bottom: 4px;
+      }
+
+      .field-sub {
+        color: var(--wave-text-muted);
+        font-size: 0.85rem;
+        margin-bottom: 6px;
+      }
+
+      /* Balances */
+      .summary-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 12px;
+        margin: 18px 0 12px;
+      }
+
+      .summary-card {
+        background: #fff;
+        border: 1px solid var(--wave-border);
+        border-radius: 14px;
+        padding: 14px;
+        box-shadow: 0 10px 24px rgba(15, 23, 42, 0.04);
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 10px;
+        align-items: center;
+      }
+
+      .summary-icon {
+        width: 38px;
+        height: 38px;
+        border-radius: 12px;
+        display: grid;
+        place-items: center;
+        font-weight: 700;
+        color: #fff;
+        font-size: 16px;
+        box-shadow: 0 10px 18px rgba(0, 0, 0, 0.06);
+      }
+
+      .summary-icon svg {
+        width: 20px;
+        height: 20px;
+        fill: #fff;
+      }
+
+      .brand-card {
+        position: relative;
+        overflow: hidden;
+        background: linear-gradient(145deg, #0b2331, #0f3247 40%, #5a1f0f);
+        color: #fff;
+        border-radius: 18px;
+        padding: 16px 18px;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        box-shadow: 0 18px 34px rgba(0, 0, 0, 0.2);
+        min-height: 200px;
+        display: grid;
+        gap: 10px;
+      }
+
+      .brand-card::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          120deg,
+          rgba(255, 140, 66, 0.28),
+          rgba(255, 255, 255, 0.06)
+        );
+        mix-blend-mode: screen;
+        opacity: 0.8;
+      }
+
+      .brand-card h4 {
+        margin: 0;
+        font-size: 1rem;
+        font-weight: 700;
+        position: relative;
+        z-index: 1;
+      }
+
+      .brand-card small {
+        position: relative;
+        z-index: 1;
+        color: rgba(255, 255, 255, 0.85);
+      }
+
+      .brand-card .brand-logo {
+        width: 46px;
+        height: 46px;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.18);
+        display: grid;
+        place-items: center;
+        font-weight: 800;
+        letter-spacing: 0.1em;
+        position: relative;
+        z-index: 1;
+      }
+
+      .brand-card .brand-value {
+        font-size: 2rem;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        position: relative;
+        z-index: 1;
+      }
+
+      .brand-card .brand-chip {
+        position: relative;
+        z-index: 1;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 10px;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.14);
+        color: #e5e7eb;
+        font-weight: 700;
+        font-size: 0.8rem;
+        border: 1px solid rgba(255, 255, 255, 0.22);
+      }
+
+      .summary-label {
+        font-size: 0.78rem;
+        color: var(--wave-text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+      }
+
+      .summary-value {
+        font-size: 1.2rem;
+        font-weight: 700;
+        margin-top: 2px;
+        letter-spacing: -0.02em;
+      }
+
+      .board-card {
+        background: #fff;
+        border: 1px solid var(--wave-border);
+        border-radius: 16px;
+        padding: 16px;
+        box-shadow: 0 14px 32px rgba(15, 23, 42, 0.05);
+      }
+
+      .board-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 12px;
+      }
+
+      .board-title {
+        font-size: 1.05rem;
+        font-weight: 700;
+        margin: 0;
+      }
+
+      .board-sub {
+        color: var(--wave-text-muted);
+        font-size: 0.88rem;
+        margin: 0;
+      }
+
+      .board-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 14px;
+        margin-top: 10px;
+      }
+
+      .board-col {
+        background: #f8fafc;
+        border: 1px solid var(--wave-border);
+        border-radius: 16px;
+        padding: 14px;
+        display: grid;
+        gap: 10px;
+        min-height: 280px;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+      }
+
+      .board-col-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+      }
+
+      .board-chip {
+        font-size: 0.7rem;
+        padding: 4px 8px;
+        border-radius: 999px;
+        background: var(--wave-primary-soft);
+        color: #4f46e5;
+        border: 1px solid #e0e7ff;
+        font-weight: 700;
+      }
+
+      .column-desc {
+        margin: 0;
+        color: var(--wave-text-muted);
+        font-size: 0.82rem;
+      }
+
+      .board-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: 10px;
+      }
+
+      .task-card {
+        background: #fff;
+        border: 1px solid var(--wave-border);
+        border-radius: 12px;
+        padding: 10px;
+        box-shadow: 0 8px 18px rgba(15, 23, 42, 0.06);
+        display: grid;
+        gap: 6px;
+      }
+
+      .task-content {
+        font-weight: 600;
+        color: var(--wave-text-main);
+        line-height: 1.4;
+      }
+
+      .task-content strong {
+        display: block;
+        font-size: 0.95rem;
+      }
+
+      .task-footer {
+        color: var(--wave-text-muted);
+        font-size: 0.8rem;
+      }
+
+      .task-actions {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+
+      /* Loader overlay */
+      #loader {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(248, 250, 252, 0.85);
+        z-index: 999;
+      }
+
+      .wave-spinner {
+        width: 36px;
+        height: 36px;
+        border-radius: 999px;
+        border: 3px solid #e5e7eb;
+        border-top-color: var(--wave-primary);
+        animation: spin 0.7s linear infinite;
+        margin-bottom: 0.6rem;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .wave-loader-text {
+        font-size: 0.85rem;
+        color: var(--wave-text-muted);
+      }
+      .fundTaskBtn {
+        background: #f0f4ff;
+        border: 1px solid #c7d2fe;
+        padding: 6px 14px;
+        border-radius: 8px;
+        font-size: 0.8rem;
+        color: #1e3a8a;
+        transition: 0.2s;
+      }
+
+      .fundTaskBtn:hover {
+        background: #e0e7ff;
+        border-color: #a5b4fc;
+      }
+
+      .fundTaskBtn:active {
+        transform: scale(0.96);
+      }
+
+      /* When task is already funded */
+      .fundTaskBtn.funded-btn {
+        background: #d1fae5 !important;
+        color: #065f46 !important;
+        border: 1px solid #a7f3d0 !important;
+        cursor: default !important;
+        opacity: 1 !important;
+      }
+
+      /* Hide content by default (app.js will show it) */
+      #content {
+        display: none;
+      }
+
+      @media (max-width: 900px) {
+        main.wave-main {
+          padding: 1.1rem;
+        }
+        .wave-page-header {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        .wave-tasks-grid {
+          grid-template-columns: minmax(0, 1fr);
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Top Nav -->
+    <nav class="navbar wave-nav fixed-top">
+      <div
+        class="container-fluid d-flex justify-content-between align-items-center"
+      >
+        <div class="wave-logo">
+          <img
+            src="./img/Wave%20Logo%20(Transparent)%202.png"
+            alt="Wave"
+            style="height: 50px; width: 48px"
+          />
+          <span class="wave-pill">smart contracts</span>
+        </div>
+
+        <div class="d-flex align-items-center gap-2">
+          <div class="wave-account-chip">
+            <span class="wave-account-dot"></span>
+            <span class="text-muted">Account</span>
+            <span id="account" style="font-weight: 500">–</span>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <main role="main" class="wave-main">
+      <div class="wave-container">
+        <!-- Loader overlay -->
+        <div id="loader" class="text-center flex-column">
+          <div class="wave-spinner"></div>
+          <div class="wave-loader-text">Connecting to Wave network…</div>
+        </div>
+
+        <!-- Main content -->
+        <div id="content">
+          <!-- Header -->
+          <div class="banner">
+            <div>
+              <div class="banner-title">Total balance</div>
+              <div class="banner-balance" id="brandBalance">— ETH</div>
+              <div class="banner-meta">Brand wallet · secure balance</div>
+            </div>
+            <div class="banner-actions">
+              <button class="banner-btn secondary">Hi, Brand</button>
+            </div>
+          </div>
+
+          <div class="summary-grid" style="margin-top: 14px">
+            <div class="summary-card">
+              <div
+                class="summary-icon"
+                style="background: linear-gradient(135deg, #4f46e5, #7c3aed)"
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M5 4h14v2H5zm0 7h14v2H5zm0 7h14v2H5z" />
+                </svg>
+              </div>
+              <div>
+                <div class="summary-label">Pending payouts</div>
+                <div class="summary-value" id="pendingPayouts">— ETH</div>
+              </div>
+            </div>
+            <div class="summary-card">
+              <div
+                class="summary-icon"
+                style="background: linear-gradient(135deg, #0ea5e9, #38bdf8)"
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M17 9h-1V7a4 4 0 1 0-8 0v2H7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2Zm-7 6.73a2 2 0 1 1 4 0 2 2 0 0 1-4 0ZM9 9V7a3 3 0 1 1 6 0v2H9Z"
+                  />
+                </svg>
+              </div>
+              <div>
+                <div class="summary-label">Total locked</div>
+                <div class="summary-value" id="totalLocked">— ETH</div>
+              </div>
+            </div>
+            <div class="summary-card">
+              <div
+                class="summary-icon"
+                style="background: linear-gradient(135deg, #10b981, #22c55e)"
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M12 2c-1.1 0-2.17.15-3.2.44l-.8.22v4.1l3-1 3 1V2.66l-.8-.22A11 11 0 0 0 12 2Zm-4 5.94v3.56L6.06 14H2.5l-.2.75A10.9 10.9 0 0 0 2 16c0 1.27.2 2.5.57 3.65l.23.72h4.08l1.02-3.07L7 15.5l1-3.14V7.94Zm8 0v4.42l1 3.14-1.9 2.8L15.12 20H19.2l.23-.72A10.9 10.9 0 0 0 20 16c0-1.27-.2-2.5-.57-3.65l-.2-.75h-3.55L16 11.5V7.94ZM9 17.5l3 1 3-1v4.1l-.8.22a11 11 0 0 1-4.4 0l-.8-.22v-4.1Z"
+                  />
+                </svg>
+              </div>
+              <div>
+                <div class="summary-label">Network</div>
+                <div class="summary-value">Sepolia</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Balance chart and payouts -->
+          <div
+            class="row g-2 align-items-stretch"
+            style="margin-top: 10px; margin-bottom: 12px"
+          >
+            <div class="col-lg-7 col-md-6">
+              <div class="wave-card h-100">
+                <div class="wave-card-header">
+                  <div>
+                    <div class="wave-card-title">Balance split</div>
+                    <div class="wave-card-kicker">
+                      Brand wallet vs locked escrow (ETH).
+                    </div>
+                  </div>
+                </div>
+                <div style="height: 240px">
+                  <canvas id="balanceChart"></canvas>
+                </div>
+                <div class="wave-card-kicker" style="margin-top: 6px">
+                  Data from latest balances. Locked = contract escrow.
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-5 col-md-6">
+              <div class="brand-card h-100">
+                <div class="brand-logo">WVR</div>
+                <h4>Total influencer payouts</h4>
+                <small>Completed tasks paid out.</small>
+                <div class="brand-value" id="totalPaidMade">—</div>
+                <div class="brand-chip">On-chain payments</div>
+
+                <div style="display: grid; gap: 10px; margin-top: 10px">
+                  <div
+                    class="field-label"
+                    style="font-size: 0.85rem; color: #e5e7eb; margin-bottom: 0"
+                  >
+                    KES converter
+                  </div>
+                  <input id="kesRate" type="hidden" value="180000" />
+                  <div
+                    style="
+                      display: grid;
+                      grid-template-columns: repeat(2, minmax(0, 1fr));
+                      gap: 10px;
+                    "
+                  >
+                    <div>
+                      <div
+                        class="field-label"
+                        style="
+                          font-size: 0.82rem;
+                          color: #e5e7eb;
+                          margin-bottom: 2px;
+                        "
+                      >
+                        Wallet (KES)
+                      </div>
+                      <div
+                        class="brand-value"
+                        id="walletKes"
+                        style="font-size: 1.2rem"
+                      >
+                        --
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        class="field-label"
+                        style="
+                          font-size: 0.82rem;
+                          color: #e5e7eb;
+                          margin-bottom: 2px;
+                        "
+                      >
+                        Locked (KES)
+                      </div>
+                      <div
+                        class="brand-value"
+                        id="lockedKes"
+                        style="font-size: 1.2rem"
+                      >
+                        --
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Create + Wallet row -->
+          <div class="row g-3 align-items-stretch" style="margin-top: 10px">
+            <div class="col-lg-7">
+              <div class="wave-card h-100">
+                <div class="field-label">Create new task</div>
+                <div class="field-sub">
+                  Describe the deliverable the influencer needs to complete.
+                </div>
+                <form
+                  class="wave-create-form"
+                  onsubmit="
+                    App.createTask();
+                    return false;
+                  "
+                >
+                  <div class="action-row">
+                    <input
+                      id="newTask"
+                      type="text"
+                      class="form-control"
+                      placeholder="e.g. Film IG reel for product launch"
+                      required
+                    />
+                    <button type="submit" class="wave-btn-primary">
+                      <span class="wave-icon-plus">+</span>
+                      <span>Add task</span>
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            <div class="col-lg-5">
+              <div class="wave-card h-100">
+                <div class="field-label">Influencer wallet</div>
+                <div class="field-sub">
+                  Save who should receive payments for this campaign.
+                </div>
+
+                <div class="action-row" style="margin-top: 6px">
+                  <input
+                    type="text"
+                    id="influencerWallet"
+                    class="form-control"
+                    placeholder="0x... influencer wallet address"
+                  />
+                  <button id="saveInfluencerBtn" class="wave-btn-primary">
+                    Save
+                  </button>
+                </div>
+                <div
+                  id="walletSavedMsg"
+                  style="
+                    display: none;
+                    color: green;
+                    font-weight: 600;
+                    margin-top: 6px;
+                  "
+                >
+                  Saved
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Task board -->
+          <div class="board-card mt-3">
+            <div class="board-header">
+              <div>
+                <div class="board-title">Campaign tasks</div>
+                <p class="board-sub">
+                  Track deliverables across funding, proof, approval, and
+                  payout.
+                </p>
+              </div>
+            </div>
+
+            <div
+              id="waveTaskBoard"
+              class="board-grid"
+              style="
+                grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+              "
+            >
+              <div class="board-col">
+                <div class="board-col-head">
+                  <div class="board-title" style="font-size: 0.95rem">Open</div>
+                  <span class="board-chip">New</span>
+                </div>
+                <p class="column-desc">Not funded or awaiting proof.</p>
+                <ul id="openTasks" class="board-list"></ul>
+              </div>
+
+              <div class="board-col">
+                <div class="board-col-head">
+                  <div class="board-title" style="font-size: 0.95rem">
+                    Delivered
+                  </div>
+                  <span class="board-chip">Review</span>
+                </div>
+                <p class="column-desc">Proof submitted, waiting for review.</p>
+                <ul id="deliveredTasks" class="board-list"></ul>
+              </div>
+
+              <div class="board-col">
+                <div class="board-col-head">
+                  <div class="board-title" style="font-size: 0.95rem">
+                    Approved
+                  </div>
+                  <span class="board-chip">Ready</span>
+                </div>
+                <p class="column-desc">Approved and ready to release funds.</p>
+                <ul id="approvedTasks" class="board-list"></ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Paid tasks -->
+          <div class="board-card mt-3">
+            <div class="board-header">
+              <div>
+                <div class="board-title">Paid tasks</div>
+                <p class="board-sub">Completed and paid out.</p>
+              </div>
+            </div>
+            <div class="board-col" style="min-height: inherit">
+              <ul id="paidTasks" class="board-list"></ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- HIDDEN TEMPLATE (REQUIRED) -->
+        <li id="taskTemplate" class="task-card" style="display: none">
+          <div class="task-content"></div>
+
+          <!-- influencer & brand actions auto-shown by JS -->
+          <div class="task-actions">
+            <button class="fundTaskBtn btn-sm btn-outline-primary">Fund</button>
+            <button class="approveTaskBtn btn-sm btn-outline-success">
+              Approve
+            </button>
+            <button class="rejectTaskBtn btn-sm btn-outline-danger">
+              Deny
+            </button>
+            <button class="releasePaymentBtn btn-sm btn-outline-warning">
+              Release
+            </button>
+          </div>
+
+          <div class="task-footer small"></div>
+        </li>
+      </div>
+    </main>
+    <!-- Reject Modal -->
+    <div
+      id="rejectModal"
+      style="
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.4);
+        backdrop-filter: blur(3px);
+        z-index: 999;
+      "
+    >
+      <div
+        style="
+          background: white;
+          width: 350px;
+          padding: 20px;
+          border-radius: 12px;
+          margin: 120px auto;
+        "
+      >
+        <h5>Reject Task</h5>
+        <p style="font-size: 0.8rem">Give a reason for rejecting this proof.</p>
+
+        <textarea
+          id="rejectNote"
+          class="form-control"
+          rows="3"
+          placeholder="Reason…"
+        ></textarea>
+
+        <button
+          id="confirmRejectBtn"
+          class="btn btn-danger mt-3"
+          style="width: 100%"
+        >
+          Submit Rejection
+        </button>
+      </div>
+    </div>
+
+    <!-- JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.10.0/dist/web3.min.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

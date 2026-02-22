@@ -1,0 +1,756 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Wave | Influencer Workspace</title>
+
+    <!-- Bootstrap -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    />
+    <!-- Using system SF Pro stack for a native feel -->
+
+    <style>
+      :root {
+        --bg: #f7f9fc;
+        --card: #ffffff;
+        --accent: #1d8cf8;
+        --accent-2: #22c55e;
+        --text: #0f172a;
+        --muted: #6b7280;
+        --border: #e5e7eb;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family:
+          "SF Pro Display",
+          "SF Pro Text",
+          -apple-system,
+          system-ui,
+          "Segoe UI",
+          sans-serif;
+        background: linear-gradient(
+          180deg,
+          #f7f9fc 0%,
+          #eef3fb 55%,
+          #f7f9fc 100%
+        );
+        min-height: 100vh;
+        padding: 80px 18px 72px;
+        color: var(--text);
+      }
+
+      .shell {
+        max-width: 1180px;
+        margin: 0 auto;
+      }
+
+      .header-card {
+        background: linear-gradient(135deg, #1d8cf8, #1463ff);
+        border-radius: 22px;
+        padding: 22px 26px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 18px;
+        box-shadow: 0 12px 36px rgba(20, 99, 255, 0.25);
+        color: #fff;
+      }
+
+      .header-left {
+        display: grid;
+        gap: 10px;
+      }
+
+      .page-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(255, 255, 255, 0.18);
+        color: #e0ecff;
+        padding: 8px 12px;
+        border-radius: 999px;
+        font-size: 12px;
+        letter-spacing: 0.2px;
+        font-weight: 700;
+      }
+
+      .page-title {
+        font-size: 30px;
+        font-weight: 700;
+        margin: 0;
+        letter-spacing: -0.4px;
+        color: #fff;
+      }
+
+      .page-sub {
+        font-size: 14px;
+        color: #e3e8ff;
+        max-width: 520px;
+        line-height: 1.6;
+        margin: 0;
+      }
+
+      .badge-trio {
+        display: flex;
+        gap: 8px;
+      }
+
+      .soft-badge {
+        padding: 6px 10px;
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.16);
+        color: #e0ecff;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
+      .header-right {
+        display: grid;
+        justify-items: end;
+        gap: 10px;
+        align-content: start;
+      }
+
+      .user-chip-floating {
+        position: fixed;
+        top: 14px;
+        right: 18px;
+        background: rgba(15, 23, 42, 0.9);
+        color: #f8fafc;
+        padding: 6px 10px;
+        border-radius: 12px;
+        font-weight: 800;
+        font-size: 11px;
+        letter-spacing: 0.2px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+        z-index: 20;
+        opacity: 0.9;
+      }
+
+      .overview-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 12px;
+        margin: 18px 0;
+      }
+
+      .top-nav {
+        width: 100%;
+        background: #ffffffee;
+        border-bottom: 1px solid #e5e7eb;
+        padding: 10px 0;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 50;
+        backdrop-filter: blur(8px);
+      }
+
+      .top-nav-inner {
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 0 18px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .top-nav img {
+        height: 70px; /* big but not breaking */
+        width: auto; /* maintain aspect ratio */
+        object-fit: contain;
+      }
+
+      .top-nav .nav-label {
+        font-weight: 800;
+        letter-spacing: 0.06em;
+        color: #0f172a;
+        text-transform: uppercase;
+        font-size: 13px;
+      }
+
+      .top-nav .nav-hello {
+        margin-left: auto;
+        font-weight: 800;
+        color: #0f172a;
+        font-size: 12px;
+        letter-spacing: 0.05em;
+        padding: 6px 10px;
+        border-radius: 12px;
+        background: #f8fafc;
+        border: 1px solid #e5e7eb;
+      }
+
+      .mini-tile {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 14px 16px;
+        box-shadow: 0 12px 26px rgba(15, 23, 42, 0.05);
+        display: grid;
+        gap: 8px;
+        grid-template-columns: auto 1fr;
+        align-items: center;
+      }
+
+      .card-box {
+        background: var(--card);
+        color: var(--text);
+        border-radius: 18px;
+        padding: 18px 20px;
+        border: 1px solid var(--border);
+        box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
+      }
+
+      .tile-icon {
+        width: 38px;
+        height: 38px;
+        border-radius: 12px;
+        display: grid;
+        place-items: center;
+        font-weight: 800;
+        color: #fff;
+        font-size: 16px;
+        box-shadow: 0 10px 18px rgba(0, 0, 0, 0.08);
+      }
+
+      .tile-icon svg {
+        width: 20px;
+        height: 20px;
+        fill: #fff;
+      }
+
+      .card-title {
+        font-weight: 700;
+        font-size: 16px;
+        margin: 0 0 4px;
+        color: var(--text);
+      }
+
+      .card-sub {
+        color: var(--muted);
+        font-size: 12px;
+        margin-bottom: 10px;
+      }
+
+      .metric-value {
+        font-size: 24px;
+        font-weight: 800;
+        color: var(--text);
+        margin: 4px 0;
+        letter-spacing: -0.2px;
+      }
+
+      .metric-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 600;
+        padding: 6px 10px;
+        border-radius: 10px;
+        background: #f8fafc;
+        border: 1px solid #e5e7eb;
+      }
+
+      .wallet-box {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 16px;
+        background: linear-gradient(
+          120deg,
+          rgba(109, 124, 255, 0.08),
+          rgba(255, 255, 255, 0.9)
+        );
+        border-radius: 14px;
+        border: 1px solid #e2e8f0;
+      }
+
+      .wallet-left {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .wallet-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #fde68a, #facc15);
+        color: #fff;
+        display: grid;
+        place-items: center;
+        font-weight: 700;
+        font-size: 18px;
+        box-shadow: 0 18px 32px rgba(250, 204, 21, 0.25);
+      }
+
+      #account {
+        font-weight: 600;
+        color: var(--text);
+        font-size: 14px;
+        word-break: break-all;
+      }
+
+      .status-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 12px;
+        border-radius: 12px;
+        background: #ecfdf3;
+        color: #166534;
+        font-weight: 700;
+        font-size: 12px;
+        letter-spacing: 0.2px;
+      }
+
+      #loader {
+        display: none;
+        font-size: 14px;
+        color: var(--muted);
+        margin: 12px 0 4px;
+        padding: 12px 14px;
+        border-radius: 14px;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+      }
+
+      #loader::before {
+        content: "";
+        width: 12px;
+        height: 12px;
+        margin-right: 10px;
+        border: 2px solid #cbd5e1;
+        border-top-color: var(--text);
+        border-radius: 50%;
+        display: inline-block;
+        animation: spin 0.7s linear infinite;
+        vertical-align: middle;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .section-head {
+        display: flex;
+        align-items: baseline;
+        gap: 12px;
+        margin-bottom: 14px;
+      }
+
+      .section-head small {
+        color: var(--muted);
+      }
+
+      .tasks-table {
+        border: 1px solid #e5e7eb;
+        border-radius: 16px;
+        overflow: hidden;
+        background: #fff;
+        box-shadow: 0 10px 26px rgba(15, 23, 42, 0.05);
+      }
+
+      .tasks-row {
+        display: grid;
+        grid-template-columns: 1.4fr 1fr;
+        gap: 12px;
+        padding: 14px 16px;
+        align-items: center;
+        border-bottom: 1px solid #e5e7eb;
+      }
+
+      .tasks-row:last-child {
+        border-bottom: none;
+      }
+
+      .tasks-head {
+        background: #f8fafc;
+        font-weight: 700;
+        color: #475569;
+        font-size: 12px;
+        letter-spacing: 0.3px;
+        text-transform: uppercase;
+      }
+
+      .task-id {
+        font-weight: 800;
+        color: #0f172a;
+        font-size: 13px;
+      }
+
+      .task-content {
+        font-weight: 600;
+        color: #1f2937;
+        margin-top: 2px;
+      }
+
+      .task-col {
+        display: grid;
+        gap: 3px;
+      }
+
+      .task-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+
+      .submitProofBtn {
+        background: linear-gradient(120deg, #2563eb, #1d8cf8);
+        color: white;
+        border: none;
+        padding: 9px 14px;
+        border-radius: 10px;
+        font-weight: 700;
+        font-size: 12px;
+        letter-spacing: 0.2px;
+        cursor: pointer;
+        box-shadow: 0 10px 18px rgba(124, 58, 237, 0.2);
+        transition:
+          transform 0.12s ease,
+          box-shadow 0.12s ease;
+      }
+
+      .submitProofBtn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 14px 24px rgba(37, 99, 235, 0.22);
+      }
+
+      .submitProofBtn:active {
+        transform: translateY(0);
+      }
+
+      .status-tag {
+        display: inline-flex;
+        align-items: center;
+        font-size: 12px;
+        font-weight: 800;
+        padding: 8px 12px;
+        border-radius: 10px;
+        border: 1px solid #e2e8f0;
+        background: #f8fafc;
+        color: #0f172a;
+      }
+
+      .status-tag.green {
+        color: #15803d;
+        border-color: rgba(21, 128, 61, 0.18);
+        background: rgba(21, 128, 61, 0.08);
+      }
+      .status-tag.yellow {
+        color: #b45309;
+        border-color: rgba(180, 83, 9, 0.18);
+        background: rgba(180, 83, 9, 0.08);
+      }
+      .status-tag.blue {
+        color: #1d8cf8;
+        border-color: rgba(29, 140, 248, 0.18);
+        background: rgba(29, 140, 248, 0.08);
+      }
+
+      canvas {
+        width: 100% !important;
+        height: 100% !important;
+      }
+
+      .balances-grid {
+        display: grid;
+        grid-template-columns: 1.15fr 1fr;
+        gap: 16px;
+        align-items: stretch;
+        margin-bottom: 18px;
+      }
+
+      .meta-card {
+        position: relative;
+        overflow: hidden;
+        color: #fff;
+        background: linear-gradient(145deg, #0b2331, #0f3247 40%, #5a1f0f);
+        border-radius: 20px;
+        padding: 16px 18px;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        box-shadow: 0 22px 40px rgba(0, 0, 0, 0.22);
+        display: grid;
+        gap: 12px;
+        min-height: 210px;
+      }
+
+      .meta-card::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          120deg,
+          rgba(255, 140, 66, 0.35),
+          rgba(255, 255, 255, 0.08)
+        );
+        mix-blend-mode: screen;
+        opacity: 0.8;
+      }
+
+      .meta-card .card-face {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        grid-template-columns: 1fr auto;
+        align-items: start;
+        gap: 12px;
+      }
+
+      .meta-logo {
+        font-weight: 800;
+        font-size: 18px;
+        letter-spacing: -0.2px;
+      }
+
+      .meta-chip {
+        width: 46px;
+        height: 32px;
+        border-radius: 8px;
+        background: linear-gradient(135deg, #d6d6d6, #f7f7f7);
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.6),
+          inset 0 -2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .meta-number {
+        font-size: 13px;
+        letter-spacing: 2px;
+        opacity: 0.8;
+        margin-top: 6px;
+      }
+
+      .meta-mask {
+        position: absolute;
+        right: -18px;
+        bottom: -20px;
+        width: 150px;
+        height: 150px;
+        background: linear-gradient(120deg, #f97316, #ea580c 60%, #a855f7);
+        clip-path: polygon(
+          50% 0%,
+          80% 12%,
+          100% 35%,
+          88% 60%,
+          66% 76%,
+          50% 100%,
+          34% 76%,
+          12% 60%,
+          0% 35%,
+          20% 12%
+        );
+        opacity: 0.22;
+        filter: blur(1px);
+        z-index: 0;
+      }
+
+      .meta-stat {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        align-items: center;
+        color: #e2e8f0;
+      }
+
+      .meta-stat-label {
+        font-size: 13px;
+        opacity: 0.82;
+      }
+
+      .meta-stat-value {
+        font-weight: 800;
+        font-size: 20px;
+        letter-spacing: -0.3px;
+      }
+
+      .chart-card {
+        display: grid;
+        gap: 10px;
+      }
+
+      @media (max-width: 720px) {
+        .balances-grid {
+          grid-template-columns: 1fr;
+        }
+        .header-card {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        .infl-task-card {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        .infl-task-status {
+          justify-content: flex-start;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="top-nav">
+      <div class="top-nav-inner">
+        <img
+          src="./img/Wave%20Logo%20(Transparent)%202.png"
+          alt="Wave"
+          style="height: 50px; width: 70px"
+        />
+        <span class="nav-hello" id="userChip">Hello, WVR</span>
+      </div>
+    </div>
+
+    <div class="shell">
+      <!-- HERO -->
+      <div class="header-card">
+        <div class="header-left">
+          <div class="page-pill">Creator Workspace</div>
+          <div class="page-title">Influencer Dashboard</div>
+          <p class="page-sub">
+            Track on-chain payouts, submit proof, and keep your campaign queue
+            tidy.
+          </p>
+          <div class="badge-trio">
+            <div class="soft-badge">Wallet synced</div>
+            <div class="soft-badge">Proof-first flow</div>
+            <div class="soft-badge">Transparent releases</div>
+          </div>
+        </div>
+        <div class="header-right">
+          <div class="wallet-box">
+            <div class="wallet-left">
+              <div class="wallet-icon">⧉</div>
+              <div>
+                <div class="card-title" style="margin: 0">Connected wallet</div>
+                <div id="account">Connecting…</div>
+              </div>
+            </div>
+            <div class="status-pill">Live</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="overview-grid">
+        <div class="mini-tile">
+          <div
+            class="tile-icon"
+            style="background: linear-gradient(135deg, #6366f1, #a855f7)"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M12 2 4 12l8 4 8-4-8-10Zm0 12.4L5.5 12 12 19l6.5-7-6.5 3.4Z"
+              />
+            </svg>
+          </div>
+          <div>
+            <div class="card-sub">ETH in account</div>
+            <div class="metric-value" id="metricBalance">--</div>
+            <div class="metric-label">Live from MetaMask</div>
+          </div>
+        </div>
+        <div class="mini-tile">
+          <div
+            class="tile-icon"
+            style="background: linear-gradient(135deg, #22c55e, #10b981)"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2h3a2 2 0 0 1 2 2v2.5H2V7a2 2 0 0 1 2-2h5Zm2 0h2v1h-2V5ZM2 10.5h20V17a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-6.5Zm9 2.75H4.5V15H11v-1.75Zm2 0V15h6.5v-1.75H13Z"
+              />
+            </svg>
+          </div>
+          <div>
+            <div class="card-sub">Lifetime Funded contracts</div>
+            <div class="metric-value" id="metricFunded">--</div>
+            <div class="metric-label">Total contracts ever funded</div>
+          </div>
+        </div>
+        <div class="mini-tile">
+          <div
+            class="tile-icon"
+            style="background: linear-gradient(135deg, #f97316, #fb923c)"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M6 2h9l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Zm8 1.5V8h4.5L14 3.5ZM8 11v-1h8v1H8Zm0 3v-1h8v1H8Zm0 3v-1h5v1H8Z"
+              />
+            </svg>
+          </div>
+          <div>
+            <div class="card-sub">Pending deliverables</div>
+            <div class="metric-value" id="metricPending">--</div>
+            <div class="metric-label">Tasks awaiting proof</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="balances-grid">
+        <div class="meta-card">
+          <div class="card-face">
+            <div>
+              <div class="meta-logo">MetaMask</div>
+              <div class="meta-number">WAVE • WVR</div>
+            </div>
+            <div class="meta-chip"></div>
+          </div>
+          <div class="meta-stat">
+            <div class="meta-stat-label">Balance (KES)</div>
+            <div class="meta-stat-value" id="cardBalance">--</div>
+          </div>
+          <div class="meta-mask"></div>
+        </div>
+
+        <div class="card-box chart-card">
+          <div class="section-head">
+            <div class="card-title" style="margin: 0">Payout history</div>
+            <small>Based on on-chain TaskPaid events.</small>
+          </div>
+          <div style="height: 240px">
+            <canvas id="paymentsChart"></canvas>
+          </div>
+          <div id="paymentsEmpty" class="card-sub" style="display: none">
+            No payouts yet. Once a brand releases payments, they show up here.
+          </div>
+        </div>
+      </div>
+
+      <!-- LOADER -->
+      <div id="loader">Loading tasks…</div>
+
+      <!-- TASK LIST -->
+      <div class="card-box">
+        <div class="section-head">
+          <div class="card-title" style="margin: 0">Campaign tasks</div>
+          <small>Everything is logged on-chain.</small>
+        </div>
+        <div class="tasks-table">
+          <div class="tasks-row tasks-head">
+            <div>Task</div>
+            <div style="text-align: right">Status / Action</div>
+          </div>
+          <div id="inflTasks"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.10.0/dist/web3.min.js"></script>
+    <!-- Influencer script -->
+    <script src="influencer-app.js"></script>
+  </body>
+</html>
