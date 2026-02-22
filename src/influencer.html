@@ -469,18 +469,25 @@
         position: relative;
         overflow: hidden;
         color: #fff;
-        background: #215be4;
+        background: linear-gradient(140deg, #182b58 0%, #215be4 54%, #6f8580 100%);
         border-radius: 20px;
         padding: 16px 18px;
-        border: 1px solid rgba(255, 255, 255, 0.06);
-        box-shadow: 0 22px 40px rgba(0, 0, 0, 0.22);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        box-shadow: 0 16px 34px rgba(16, 28, 54, 0.3);
         display: grid;
         gap: 12px;
         min-height: 210px;
       }
 
       .meta-card::after {
-        display: none;
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+          radial-gradient(circle at 78% 16%, rgba(250, 194, 189, 0.4), transparent 42%),
+          linear-gradient(130deg, rgba(255, 255, 255, 0.08), transparent 55%);
+        opacity: 0.9;
+        pointer-events: none;
       }
 
       .meta-card .card-face {
@@ -502,7 +509,7 @@
         width: 46px;
         height: 32px;
         border-radius: 8px;
-        background: #dfe4ef;
+        background: rgba(255, 255, 255, 0.72);
         box-shadow:
           inset 0 1px 0 rgba(255, 255, 255, 0.6),
           inset 0 -2px 4px rgba(0, 0, 0, 0.1);
