@@ -592,6 +592,104 @@
           justify-content: flex-start;
         }
       }
+
+      /* Serious dashboard overrides */
+      body {
+        background: #edf1f7;
+        padding: 0 0 32px 0;
+      }
+
+      .top-nav {
+        position: fixed;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 244px;
+        background: #111c2f;
+        border-right: 1px solid #1c2c46;
+        border-bottom: none;
+        padding: 22px 16px;
+      }
+
+      .top-nav-inner {
+        max-width: none;
+        height: 100%;
+        padding: 0;
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+        gap: 16px;
+      }
+
+      .top-nav img {
+        height: 48px;
+        width: 48px;
+      }
+
+      .nav-rail {
+        display: grid;
+        gap: 8px;
+      }
+
+      .nav-link-rail {
+        color: #a9bad4;
+        border-radius: 12px;
+        padding: 10px 12px;
+        font-size: 0.9rem;
+        font-weight: 700;
+      }
+
+      .nav-link-rail.active {
+        background: #ffffff;
+        color: #0f1b2f;
+      }
+
+      .top-nav .nav-hello {
+        margin-left: 0;
+        background: #17253b;
+        color: #d0dcf2;
+        border: 1px solid #2a3b58;
+      }
+
+      .shell {
+        margin: 0 0 0 244px;
+        max-width: none;
+        padding: 22px;
+      }
+
+      .header-card,
+      .mini-tile,
+      .card-box,
+      .tasks-table {
+        border-radius: 12px;
+        box-shadow: 0 4px 14px rgba(15, 27, 47, 0.08);
+      }
+
+      .header-card {
+        margin-top: 0;
+      }
+
+      @media (max-width: 980px) {
+        .top-nav {
+          position: static;
+          width: 100%;
+          height: auto;
+          border-right: none;
+          border-bottom: 1px solid #1c2c46;
+        }
+
+        .top-nav-inner {
+          grid-template-rows: auto auto auto;
+        }
+
+        .nav-rail {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .shell {
+          margin: 0;
+          padding: 14px;
+        }
+      }
     </style>
   </head>
 
@@ -601,8 +699,14 @@
         <img
           src="./img/wave-logo.png"
           alt="Wave"
-          style="height: 50px; width: 70px"
+          style="height: 50px; width: 50px"
         />
+        <div class="nav-rail">
+          <div class="nav-link-rail active">Dashboard</div>
+          <div class="nav-link-rail">Tasks</div>
+          <div class="nav-link-rail">Payouts</div>
+          <div class="nav-link-rail">Settings</div>
+        </div>
         <span class="nav-hello" id="userChip">Hello, WVR</span>
       </div>
     </div>
