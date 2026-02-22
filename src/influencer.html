@@ -614,8 +614,8 @@
       }
 
       .top-nav img {
-        height: 48px;
-        width: 48px;
+        height: 64px;
+        width: 64px;
       }
 
       .nav-rail {
@@ -634,6 +634,21 @@
       .nav-link-rail.active {
         background: #ffffff;
         color: #0f1b2f;
+      }
+
+      .nav-smart-pill {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 4px 10px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.12);
+        color: #d7e3ff;
+        font-size: 0.66rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        width: fit-content;
       }
 
       .top-nav .nav-hello {
@@ -692,8 +707,9 @@
         <img
           src="./img/wave-logo.png"
           alt="Wave"
-          style="height: 50px; width: 50px"
+          style="height: 64px; width: 64px"
         />
+        <span class="nav-smart-pill">smart contracts</span>
         <div class="nav-rail">
           <div class="nav-link-rail active">Dashboard</div>
           <div class="nav-link-rail">Tasks</div>
