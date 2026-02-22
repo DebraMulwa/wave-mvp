@@ -1,12 +1,7 @@
 {
   "rewrites": [
-    {
-      "source": "/",
-      "destination": "/index.html"
-    },
-    {
-      "source": "/influencer",
-      "destination": "/influencer.html"
-    }
+    { "source": "/", "destination": "/src/index.html" },
+    { "source": "/influencer", "destination": "/src/influencer.html" },
+    { "source": "/influencer/(.*)", "destination": "/src/influencer.html" }
   ]
 }
