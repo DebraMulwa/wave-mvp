@@ -1,7 +1,11 @@
 {
   "rewrites": [
-    { "source": "/", "destination": "/src/index.html" },
+    { "source": "/app.js", "destination": "/src/app.js" },
+    { "source": "/influencer-app.js", "destination": "/src/influencer-app.js" },
+    { "source": "/Wave.json", "destination": "/src/Wave.json" },
+    { "source": "/img/:path*", "destination": "/src/img/:path*" },
     { "source": "/influencer", "destination": "/src/influencer.html" },
-    { "source": "/influencer/(.*)", "destination": "/src/influencer.html" }
+    { "source": "/influencer/(.*)", "destination": "/src/influencer.html" },
+    { "source": "/", "destination": "/src/index.html" }
   ]
 }
