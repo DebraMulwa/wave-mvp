@@ -4,6 +4,15 @@ App = {
   account: null,
   web3Provider: null,
   balanceChart: null,
+  stats: {
+    taskCount: 0,
+    openCount: 0,
+    reviewCount: 0,
+    approvedCount: 0,
+    paidTasksCount: 0,
+    pendingPayoutsEth: 0,
+    lockedEth: 0,
+  },
 
   load: async () => {
     console.log("App loading...");
@@ -86,6 +95,7 @@ App = {
     App.setLoading(false);
     // load balances AFTER UI is visible
     await App.renderBalances();
+    App.renderSidebarViews();
   },
 
   renderTasks: async () => {
@@ -96,6 +106,9 @@ App = {
   $("#paidTasks").html("");
   let pendingPayoutsEth = 0;
   let paidTasksCount = 0;
+  let openCount = 0;
+  let reviewCount = 0;
+  let approvedCount = 0;
 
   const taskCount = Number(await App.wave.methods.taskCount().call());
   const template = $("#taskTemplate");
@@ -134,6 +147,7 @@ $task.find(".releasePaymentBtn").attr("data-id", id);
 
     // LOGIC FOR WHICH COLUMN THIS TASK GOES TO
     if (!proofSubmitted && !completed) {
+      openCount += 1;
       // COLUMN 1: OPEN
       actions.find(".fundTaskBtn").show().attr("data-id", id);
       actions.find(".submitProofBtn").show().attr("data-id", id);
@@ -146,12 +160,14 @@ $task.find(".releasePaymentBtn").attr("data-id", id);
       $("#openTasks").append($task);
 
     } else if (proofSubmitted && !completed) {
+      reviewCount += 1;
       // COLUMN 2: DELIVERED
       actions.find(".approveTaskBtn").show().attr("data-id", id);
       actions.find(".rejectTaskBtn").show().attr("data-id", id);
       $("#deliveredTasks").append($task);
 
     } else if (completed && !paid) {
+      approvedCount += 1;
       // COLUMN 3: APPROVED
       actions.find(".releasePaymentBtn").show().attr("data-id", id);
       pendingPayoutsEth += Number(web3.utils.fromWei(value.toString(), "ether"));
@@ -166,6 +182,14 @@ $task.find(".releasePaymentBtn").attr("data-id", id);
 
   $("#pendingPayouts").text(pendingPayoutsEth.toFixed(3) + " ETH");
   $("#totalPaidMade").text(paidTasksCount);
+
+  App.stats.taskCount = taskCount;
+  App.stats.openCount = openCount;
+  App.stats.reviewCount = reviewCount;
+  App.stats.approvedCount = approvedCount;
+  App.stats.paidTasksCount = paidTasksCount;
+  App.stats.pendingPayoutsEth = pendingPayoutsEth;
+  App.renderSidebarViews();
 
 },
 
@@ -223,10 +247,40 @@ $task.find(".releasePaymentBtn").attr("data-id", id);
 
       App.renderBalanceChart(brandBalEth, escrowEth);
       App.renderKesConversions(brandBalEth, escrowEth);
+      App.stats.lockedEth = escrowEth;
+      App.renderSidebarViews();
 
     } catch (err) {
       console.error("BALANCE ERR:", err);
     }
+  },
+
+  initSidebarNavigation: () => {
+    const map = {
+      dashboard: "#brandDashboardView",
+      campaigns: "#brandCampaignsView",
+      payouts: "#brandPayoutsView",
+    };
+
+    $(".wave-menu-item").on("click", function () {
+      const view = $(this).data("view");
+      if (!view || !map[view]) return;
+
+      $(".wave-menu-item").removeClass("active");
+      $(this).addClass("active");
+      $(".brand-view").removeClass("active");
+      $(map[view]).addClass("active");
+    });
+  },
+
+  renderSidebarViews: () => {
+    $("#campaignTotalTasks").text(App.stats.taskCount ?? 0);
+    $("#campaignOpenTasks").text(App.stats.openCount ?? 0);
+    $("#campaignReviewTasks").text(App.stats.reviewCount ?? 0);
+    $("#campaignApprovedTasks").text(App.stats.approvedCount ?? 0);
+    $("#payoutPendingValue").text(`${(App.stats.pendingPayoutsEth ?? 0).toFixed(3)} ETH`);
+    $("#payoutPaidTasks").text(App.stats.paidTasksCount ?? 0);
+    $("#payoutLockedValue").text(`${(App.stats.lockedEth ?? 0).toFixed(3)} ETH`);
   },
 
   createTask: async () => {
@@ -377,6 +431,7 @@ releasePayment: async function(taskId) {
 window.addEventListener("load", function () {
   App.load();
 $(document).off("click");
+  App.initSidebarNavigation();
 
   // SAVE INFLUENCER WALLET
   $("#saveInfluencerBtn").on("click", function (e) {

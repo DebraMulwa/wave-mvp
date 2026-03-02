@@ -821,6 +821,21 @@
         border-radius: 12px;
       }
 
+      .brand-view {
+        display: none;
+      }
+
+      .brand-view.active {
+        display: block;
+      }
+
+      .brand-view-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 12px;
+        margin-top: 14px;
+      }
+
       @media (max-width: 980px) {
         .wave-nav {
           position: static !important;
@@ -858,10 +873,9 @@
         </div>
 
         <div class="wave-side-menu">
-          <div class="wave-menu-item active">Dashboard</div>
-          <div class="wave-menu-item">Campaigns</div>
-          <div class="wave-menu-item">Payouts</div>
-          <div class="wave-menu-item">Settings</div>
+          <div class="wave-menu-item active" data-view="dashboard">Dashboard</div>
+          <div class="wave-menu-item" data-view="campaigns">Campaigns</div>
+          <div class="wave-menu-item" data-view="payouts">Payouts</div>
         </div>
 
         <div class="d-flex align-items-center gap-2">
@@ -882,6 +896,7 @@
 
         <!-- Main content -->
         <div id="content">
+          <div id="brandDashboardView" class="brand-view active">
           <!-- Header -->
           <div class="banner">
             <div>
@@ -1183,6 +1198,86 @@
             </div>
             <div class="board-col" style="min-height: inherit">
               <ul id="paidTasks" class="board-list"></ul>
+            </div>
+          </div>
+          </div>
+
+          <div id="brandCampaignsView" class="brand-view">
+            <div class="board-card">
+              <div class="board-header">
+                <div>
+                  <div class="board-title">Campaigns</div>
+                  <p class="board-sub">
+                    Snapshot of campaign execution and task progress.
+                  </p>
+                </div>
+              </div>
+              <div class="brand-view-grid">
+                <div class="summary-card">
+                  <div class="summary-icon" style="background: #215be4">#</div>
+                  <div>
+                    <div class="summary-label">Total tasks</div>
+                    <div class="summary-value" id="campaignTotalTasks">0</div>
+                  </div>
+                </div>
+                <div class="summary-card">
+                  <div class="summary-icon" style="background: #9bada9">O</div>
+                  <div>
+                    <div class="summary-label">Open</div>
+                    <div class="summary-value" id="campaignOpenTasks">0</div>
+                  </div>
+                </div>
+                <div class="summary-card">
+                  <div class="summary-icon" style="background: #fac2bd">R</div>
+                  <div>
+                    <div class="summary-label">In review</div>
+                    <div class="summary-value" id="campaignReviewTasks">0</div>
+                  </div>
+                </div>
+                <div class="summary-card">
+                  <div class="summary-icon" style="background: #6f8580">A</div>
+                  <div>
+                    <div class="summary-label">Approved</div>
+                    <div class="summary-value" id="campaignApprovedTasks">0</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="brandPayoutsView" class="brand-view">
+            <div class="board-card">
+              <div class="board-header">
+                <div>
+                  <div class="board-title">Payouts</div>
+                  <p class="board-sub">
+                    Track released and pending campaign payments.
+                  </p>
+                </div>
+              </div>
+              <div class="brand-view-grid">
+                <div class="summary-card">
+                  <div class="summary-icon" style="background: #215be4">$</div>
+                  <div>
+                    <div class="summary-label">Pending value</div>
+                    <div class="summary-value" id="payoutPendingValue">0 ETH</div>
+                  </div>
+                </div>
+                <div class="summary-card">
+                  <div class="summary-icon" style="background: #9bada9">P</div>
+                  <div>
+                    <div class="summary-label">Paid tasks</div>
+                    <div class="summary-value" id="payoutPaidTasks">0</div>
+                  </div>
+                </div>
+                <div class="summary-card">
+                  <div class="summary-icon" style="background: #6f8580">L</div>
+                  <div>
+                    <div class="summary-label">Locked value</div>
+                    <div class="summary-value" id="payoutLockedValue">0 ETH</div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

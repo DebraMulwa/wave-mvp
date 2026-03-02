@@ -60,14 +60,15 @@ Influencer = {
     Influencer.setLoading(true)
     const summary = await Influencer.renderTasks()
     await Influencer.renderMetrics(summary)
-    await Influencer.renderPayouts()
+    const payoutStats = await Influencer.renderPayouts()
+    Influencer.renderSidebarViews(summary, payoutStats)
     Influencer.setLoading(false)
   },
 
   renderTasks: async () => {
     $("#inflTasks").html("")
     const taskCount = Number(await Influencer.wave.methods.taskCount().call())
-    const summary = { funded: 0, pending: 0 }
+    const summary = { funded: 0, pending: 0, total: 0, paid: 0 }
 
     for (let i = 1; i <= taskCount; i++) {
       const t = await Influencer.wave.methods.getTask(i).call()
@@ -83,9 +84,11 @@ Influencer = {
       const rejectionNote = t.rejectionNote ?? t[8]
 
       if (influencer !== Influencer.account.toLowerCase()) continue
+      summary.total += 1
 
       if (value > 0 || paid) summary.funded += 1
       if (!proofSubmitted) summary.pending += 1
+      if (paid) summary.paid += 1
 
 let html = `
 <div class="tasks-row">
@@ -181,7 +184,7 @@ $("#inflTasks").append(html)
           Influencer.chart.destroy()
           Influencer.chart = null
         }
-        return
+        return { totalPaidEth: 0, paidCount: 0 }
       }
 
       $("#paymentsEmpty").hide()
@@ -259,9 +262,46 @@ $("#inflTasks").append(html)
           },
         },
       })
+      return { totalPaidEth: running, paidCount: sorted.length }
     } catch (err) {
       console.error("Error rendering payouts chart", err)
+      return { totalPaidEth: 0, paidCount: 0 }
     }
+  },
+
+  renderSidebarViews: (summary, payoutStats) => {
+    const total = summary?.total ?? 0
+    const pending = summary?.pending ?? 0
+    const paid = summary?.paid ?? 0
+    const totalPaidEth = payoutStats?.totalPaidEth ?? 0
+    const paidCount = payoutStats?.paidCount ?? paid
+    const totalKes = totalPaidEth * Influencer.rates.kesPerEth
+
+    $("#myTasksAssigned").text(total)
+    $("#myTasksPending").text(pending)
+    $("#myTasksPaid").text(paid)
+    $("#earningsTotalEth").text(`${totalPaidEth.toFixed(3)} Ξ`)
+    $("#earningsPaidCount").text(paidCount)
+    $("#earningsTotalKes").text(
+      `KES ${totalKes.toLocaleString(undefined, { maximumFractionDigits: 0 })}`
+    )
+  },
+
+  initSidebarNavigation: () => {
+    const viewMap = {
+      dashboard: "#influencerDashboardView",
+      "my-tasks": "#influencerMyTasksView",
+      earnings: "#influencerEarningsView",
+    }
+
+    $(".nav-link-rail").on("click", function () {
+      const view = $(this).data("view")
+      if (!view || !viewMap[view]) return
+      $(".nav-link-rail").removeClass("active")
+      $(this).addClass("active")
+      $(".infl-view").removeClass("active")
+      $(viewMap[view]).addClass("active")
+    })
   },
 
   submitProof: async (taskId) => {
@@ -290,5 +330,6 @@ $(document).on("click", ".submitProofBtn", function () {
 })
 
 window.addEventListener("load", function () {
+  Influencer.initSidebarNavigation()
   Influencer.load()
 })

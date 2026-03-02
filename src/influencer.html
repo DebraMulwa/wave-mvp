@@ -658,6 +658,21 @@
         box-shadow: 0 4px 14px rgba(15, 27, 47, 0.08);
       }
 
+      .infl-view {
+        display: none;
+      }
+
+      .infl-view.active {
+        display: block;
+      }
+
+      .infl-view-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 12px;
+        margin-top: 14px;
+      }
+
       .header-card {
         margin-top: 0;
       }
@@ -696,16 +711,16 @@
           style="height: 50px; width: 50px"
         />
         <div class="nav-rail">
-          <div class="nav-link-rail active">Dashboard</div>
-          <div class="nav-link-rail">Tasks</div>
-          <div class="nav-link-rail">Payouts</div>
-          <div class="nav-link-rail">Settings</div>
+          <div class="nav-link-rail active" data-view="dashboard">Dashboard</div>
+          <div class="nav-link-rail" data-view="my-tasks">My Tasks</div>
+          <div class="nav-link-rail" data-view="earnings">Earnings</div>
         </div>
         <span class="nav-hello" id="userChip">Hello, WVR</span>
       </div>
     </div>
 
     <div class="shell">
+      <div id="influencerDashboardView" class="infl-view active">
       <!-- HERO -->
       <div class="header-card">
         <div class="header-left">
@@ -834,6 +849,71 @@
             <div style="text-align: right">Status / Action</div>
           </div>
           <div id="inflTasks"></div>
+        </div>
+      </div>
+      </div>
+
+      <div id="influencerMyTasksView" class="infl-view">
+        <div class="card-box">
+          <div class="section-head">
+            <div class="card-title" style="margin: 0">My Tasks</div>
+            <small>Your current workflow status.</small>
+          </div>
+          <div class="infl-view-grid">
+            <div class="mini-tile">
+              <div class="tile-icon" style="background: #215be4">T</div>
+              <div>
+                <div class="card-sub">Assigned</div>
+                <div class="metric-value" id="myTasksAssigned">0</div>
+              </div>
+            </div>
+            <div class="mini-tile">
+              <div class="tile-icon" style="background: #9bada9">P</div>
+              <div>
+                <div class="card-sub">Pending proof</div>
+                <div class="metric-value" id="myTasksPending">0</div>
+              </div>
+            </div>
+            <div class="mini-tile">
+              <div class="tile-icon" style="background: #fac2bd">C</div>
+              <div>
+                <div class="card-sub">Completed (paid)</div>
+                <div class="metric-value" id="myTasksPaid">0</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="influencerEarningsView" class="infl-view">
+        <div class="card-box">
+          <div class="section-head">
+            <div class="card-title" style="margin: 0">Earnings</div>
+            <small>On-chain payout totals for this wallet.</small>
+          </div>
+          <div class="infl-view-grid">
+            <div class="mini-tile">
+              <div class="tile-icon" style="background: #215be4">Ξ</div>
+              <div>
+                <div class="card-sub">Total received</div>
+                <div class="metric-value" id="earningsTotalEth">0.000 Ξ</div>
+              </div>
+            </div>
+            <div class="mini-tile">
+              <div class="tile-icon" style="background: #9bada9">#</div>
+              <div>
+                <div class="card-sub">Paid tasks</div>
+                <div class="metric-value" id="earningsPaidCount">0</div>
+              </div>
+            </div>
+            <div class="mini-tile">
+              <div class="tile-icon" style="background: #fac2bd">K</div>
+              <div>
+                <div class="card-sub">Estimated KES</div>
+                <div class="metric-value" id="earningsTotalKes">KES 0</div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
