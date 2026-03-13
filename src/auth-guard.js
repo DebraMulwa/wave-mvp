@@ -15,8 +15,11 @@ function roleHome(role) {
 function applySessionUI(profile) {
   if (!profile) return;
 
+  const displayName =
+    profile.name || (profile.role === "admin" ? "Wave Admin" : "Wave User");
+
   document.querySelectorAll("[data-auth-name]").forEach((el) => {
-    el.textContent = profile.name || "Wave User";
+    el.textContent = displayName;
   });
 
   document.querySelectorAll("[data-auth-role-label]").forEach((el) => {
