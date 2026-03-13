@@ -8,8 +8,10 @@ import {
   updateProfile,
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 import {
+  collection,
   doc,
   getDoc,
+  getDocs,
   getFirestore,
   setDoc,
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
@@ -31,9 +33,11 @@ export {
   app,
   auth,
   db,
+  collection,
   createUserWithEmailAndPassword,
   doc,
   getDoc,
+  getDocs,
   onAuthStateChanged,
   setDoc,
   signInWithEmailAndPassword,

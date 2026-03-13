@@ -10,7 +10,9 @@ import {
 } from "./firebase.js";
 
 function roleHome(role) {
-  return role === "influencer" ? "/influencer" : "/";
+  if (role === "influencer") return "/influencer";
+  if (role === "admin") return "/admin";
+  return "/";
 }
 
 function showMessage(targetId, message, tone) {

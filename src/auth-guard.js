@@ -7,7 +7,9 @@ window.WaveAuthGuard = {
 };
 
 function roleHome(role) {
-  return role === "influencer" ? "/influencer" : "/";
+  if (role === "influencer") return "/influencer";
+  if (role === "admin") return "/admin";
+  return "/";
 }
 
 function applySessionUI(profile) {
