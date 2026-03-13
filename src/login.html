@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Wave | Login</title>
+    <link rel="icon" type="image/png" href="./img/wave-logo.png" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #f2f5fb;
+        --card: #ffffff;
+        --text: #10203a;
+        --muted: #607087;
+        --line: #d8e1ee;
+        --accent: #1f5eff;
+        --error: #c44536;
+        --success: #15803d;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        padding: 20px;
+        font-family: "Space Grotesk", sans-serif;
+        color: var(--text);
+        background:
+          radial-gradient(circle at top right, rgba(31, 94, 255, 0.12), transparent 24%),
+          radial-gradient(circle at bottom left, rgba(239, 141, 114, 0.18), transparent 24%),
+          var(--bg);
+      }
+
+      .card {
+        width: min(100%, 470px);
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 28px;
+        padding: 32px;
+        box-shadow: 0 24px 60px rgba(18, 35, 64, 0.1);
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 26px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .logo img {
+        width: 48px;
+        height: 48px;
+      }
+
+      h1 {
+        margin: 0 0 10px;
+        font-size: 2rem;
+      }
+
+      p {
+        margin: 0 0 22px;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+
+      label {
+        display: block;
+        font-size: 0.95rem;
+        font-weight: 700;
+        margin-bottom: 8px;
+      }
+
+      input {
+        width: 100%;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        padding: 14px 16px;
+        font: inherit;
+        margin-bottom: 16px;
+      }
+
+      button {
+        width: 100%;
+        border: 0;
+        border-radius: 16px;
+        padding: 15px;
+        font: inherit;
+        font-weight: 700;
+        color: white;
+        background: var(--accent);
+        cursor: pointer;
+      }
+
+      .row {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 18px;
+      }
+
+      .row a {
+        color: var(--text);
+        font-weight: 700;
+        text-decoration: none;
+      }
+
+      .form-note {
+        min-height: 24px;
+        margin: 10px 0 0;
+        font-size: 0.92rem;
+      }
+
+      .form-note.error {
+        color: var(--error);
+      }
+
+      .form-note.success {
+        color: var(--success);
+      }
+    </style>
+  </head>
+  <body data-auto-redirect-auth="true">
+    <div class="card">
+      <div class="logo">
+        <img src="./img/wave-logo.png" alt="Wave" />
+        <span>Wave Login</span>
+      </div>
+      <h1>Welcome back</h1>
+      <p>
+        Log in with the account you created. Wave sends you to the correct
+        workspace based on whether you signed up as a brand or influencer.
+      </p>
+
+      <form id="loginForm">
+        <label for="loginEmail">Email</label>
+        <input id="loginEmail" type="email" placeholder="you@wave.io" required />
+
+        <label for="loginPassword">Password</label>
+        <input
+          id="loginPassword"
+          type="password"
+          placeholder="Enter your password"
+          required
+        />
+
+        <button type="submit">Log In</button>
+        <div id="loginMessage" class="form-note"></div>
+      </form>
+
+      <div class="row">
+        <a href="/signup">Create account</a>
+        <a href="/">Back to dashboard</a>
+      </div>
+    </div>
+
+    <script type="module" src="/auth.js"></script>
+  </body>
+</html>

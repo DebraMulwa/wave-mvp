@@ -1,11 +1,18 @@
 {
   "rewrites": [
+    { "source": "/auth.js", "destination": "/src/auth.js" },
+    { "source": "/firebase.js", "destination": "/src/firebase.js" },
     { "source": "/app.js", "destination": "/src/app.js" },
     { "source": "/influencer-app.js", "destination": "/src/influencer-app.js" },
     { "source": "/Wave.json", "destination": "/src/Wave.json" },
     { "source": "/img/:path*", "destination": "/src/img/:path*" },
     { "source": "/influencer", "destination": "/src/influencer.html" },
+    { "source": "/influencer.html", "destination": "/src/influencer.html" },
     { "source": "/influencer/(.*)", "destination": "/src/influencer.html" },
+    { "source": "/login", "destination": "/src/login.html" },
+    { "source": "/login.html", "destination": "/src/login.html" },
+    { "source": "/signup", "destination": "/src/signup.html" },
+    { "source": "/signup.html", "destination": "/src/signup.html" },
     { "source": "/", "destination": "/src/index.html" }
   ]
 }
