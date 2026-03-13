@@ -428,9 +428,12 @@ releasePayment: async function(taskId) {
   }
 };
 
-window.addEventListener("load", function () {
+window.addEventListener("load", async function () {
+  await window.WaveAuthGuard?.ready;
+  if (window.WaveAuthGuard && !window.WaveAuthGuard.authorized) return;
+
   App.load();
-$(document).off("click");
+  $(document).off("click");
   App.initSidebarNavigation();
 
   // SAVE INFLUENCER WALLET

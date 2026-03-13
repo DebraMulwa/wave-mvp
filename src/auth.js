@@ -6,7 +6,6 @@ import {
   getDoc,
   setDoc,
   signInWithEmailAndPassword,
-  signOut,
   updateProfile,
 } from "./firebase.js";
 
@@ -21,22 +20,6 @@ function showMessage(targetId, message, tone) {
   el.className = "form-note " + (tone || "");
 }
 
-function applySessionUI(profile) {
-  if (!profile) return;
-
-  document.querySelectorAll("[data-auth-name]").forEach((el) => {
-    el.textContent = profile.name || "Wave User";
-  });
-
-  document.querySelectorAll("[data-auth-role-label]").forEach((el) => {
-    el.textContent = profile.role === "influencer" ? "Influencer" : "Brand";
-  });
-
-  document.querySelectorAll("[data-auth-email]").forEach((el) => {
-    el.textContent = profile.email || "";
-  });
-}
-
 async function fetchProfile(user) {
   if (!user) return null;
 
@@ -49,33 +32,6 @@ async function fetchProfile(user) {
     email: user.email || "",
     role: data.role || "brand",
   };
-}
-
-function bindLogout() {
-  document.querySelectorAll("[data-auth-logout]").forEach((button) => {
-    button.addEventListener("click", async function () {
-      await signOut(auth);
-      window.location.href = "/login";
-    });
-  });
-}
-
-async function guardProtectedPage() {
-  const requiredRole = document.body.dataset.authRole;
-  if (!requiredRole) return;
-
-  const user = auth.currentUser;
-  if (!user) {
-    window.location.href = "/login";
-    return;
-  }
-
-  const profile = await fetchProfile(user);
-  applySessionUI(profile);
-
-  if (profile.role !== requiredRole) {
-    window.location.href = roleHome(profile.role);
-  }
 }
 
 function bindSignupForm() {
@@ -161,13 +117,11 @@ async function redirectAuthPagesIfLoggedIn() {
 }
 
 async function initAuthPage() {
-  bindLogout();
   bindLoginForm();
   bindSignupForm();
 
   await auth.authStateReady();
   await redirectAuthPagesIfLoggedIn();
-  await guardProtectedPage();
 }
 
 initAuthPage().catch((error) => {

@@ -1,6 +1,7 @@
 {
   "rewrites": [
     { "source": "/auth.js", "destination": "/src/auth.js" },
+    { "source": "/auth-guard.js", "destination": "/src/auth-guard.js" },
     { "source": "/firebase.js", "destination": "/src/firebase.js" },
     { "source": "/app.js", "destination": "/src/app.js" },
     { "source": "/influencer-app.js", "destination": "/src/influencer-app.js" },

@@ -2,6 +2,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebas
 import {
   createUserWithEmailAndPassword,
   getAuth,
+  onAuthStateChanged,
   signInWithEmailAndPassword,
   signOut,
   updateProfile,
@@ -33,6 +34,7 @@ export {
   createUserWithEmailAndPassword,
   doc,
   getDoc,
+  onAuthStateChanged,
   setDoc,
   signInWithEmailAndPassword,
   signOut,

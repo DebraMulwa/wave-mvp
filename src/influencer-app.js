@@ -329,7 +329,10 @@ $(document).on("click", ".submitProofBtn", function () {
   Influencer.submitProof(id)
 })
 
-window.addEventListener("load", function () {
+window.addEventListener("load", async function () {
+  await window.WaveAuthGuard?.ready
+  if (window.WaveAuthGuard && !window.WaveAuthGuard.authorized) return
+
   Influencer.initSidebarNavigation()
   Influencer.load()
 })
