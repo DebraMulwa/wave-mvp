@@ -153,6 +153,12 @@
         margin-bottom: 14px;
       }
 
+      .panel-actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
       .panel-head h2 {
         margin: 0;
         font-size: 1.15rem;
@@ -169,6 +175,49 @@
 
       .admin-view.active {
         display: block;
+      }
+
+      .report-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 14px;
+        margin-bottom: 18px;
+      }
+
+      .report-metric {
+        background: linear-gradient(180deg, #ffffff, #f8fbff);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 16px;
+      }
+
+      .report-metric-label {
+        color: var(--muted);
+        font-size: 0.88rem;
+        margin-bottom: 8px;
+      }
+
+      .report-metric-value {
+        font-size: 1.5rem;
+        font-weight: 800;
+      }
+
+      .report-meta {
+        color: var(--muted);
+        font-size: 0.92rem;
+        margin-bottom: 14px;
+      }
+
+      .report-preview {
+        width: 100%;
+        min-height: 280px;
+        border-radius: 16px;
+        border: 1px solid var(--border);
+        background: #0f172a;
+        color: #e2e8f0;
+        padding: 18px;
+        font: 0.92rem/1.6 "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+        resize: vertical;
       }
 
       .table-wrap {
@@ -225,6 +274,7 @@
           <button type="button" class="admin-link active" data-view="tasks">Tasks</button>
           <button type="button" class="admin-link" data-view="users">Users</button>
           <button type="button" class="admin-link" data-view="campaigns">Campaigns</button>
+          <button type="button" class="admin-link" data-view="reports">Reports</button>
         </div>
         <div class="d-flex align-items-center gap-2">
           <span class="badge text-bg-light">Hello, <span data-auth-name>Wave Admin</span></span>
@@ -255,7 +305,7 @@
           <div class="stat-value" id="adminUserCount">0</div>
         </article>
         <article class="stat-card">
-          <div class="stat-label">Campaign groups</div>
+          <div class="stat-label">Active stages</div>
           <div class="stat-value" id="adminCampaignCount">0</div>
         </article>
         <article class="stat-card">
@@ -358,6 +408,62 @@
               <tbody id="campaignSnapshotRows"></tbody>
             </table>
           </div>
+        </div>
+      </section>
+
+      <section id="adminReportsView" class="admin-view">
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <h2>Platform Reports</h2>
+              <div class="panel-sub">
+                Generate a management-ready summary from registered users, task flow, and payout history.
+              </div>
+            </div>
+            <div class="panel-actions">
+              <button type="button" class="btn btn-outline-secondary btn-sm" id="refreshReportData">
+                Refresh
+              </button>
+              <button type="button" class="btn btn-outline-primary btn-sm" id="downloadReportTxt">
+                Download TXT
+              </button>
+              <button type="button" class="btn btn-primary btn-sm" id="downloadReportCsv">
+                Download CSV
+              </button>
+            </div>
+          </div>
+
+          <div class="report-meta">
+            Generated on <span id="reportGeneratedAt">-</span>
+            <br />
+            Latest activity: <span id="reportLatestActivity">-</span>
+          </div>
+
+          <div class="report-grid">
+            <article class="report-metric">
+              <div class="report-metric-label">Total funded value</div>
+              <div class="report-metric-value" id="reportTotalFundedEth">0 ETH</div>
+            </article>
+            <article class="report-metric">
+              <div class="report-metric-label">Released payouts</div>
+              <div class="report-metric-value" id="reportReleasedEth">0 ETH</div>
+            </article>
+            <article class="report-metric">
+              <div class="report-metric-label">Locked escrow</div>
+              <div class="report-metric-value" id="reportLockedEth">0 ETH</div>
+            </article>
+            <article class="report-metric">
+              <div class="report-metric-label">Approval rate</div>
+              <div class="report-metric-value" id="reportApprovalRate">0%</div>
+            </article>
+          </div>
+
+          <textarea
+            id="reportSummaryPreview"
+            class="report-preview"
+            readonly
+            aria-label="Generated report preview"
+          ></textarea>
         </div>
       </section>
     </div>
