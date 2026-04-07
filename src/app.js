@@ -291,76 +291,29 @@ $task.find(".releasePaymentBtn").attr("data-id", id);
     alert("Task created!");
     window.location.reload();
   },
-
-  getWalletInputValue: () => {
-    const rawInput = $('#influencerWallet').val() || "";
-    return rawInput
-      .replace(/[\u200B-\u200D\uFEFF]/g, "")
-      .trim()
-      .replace(/[.,;:!?]+$/, "");
-  },
-
-  resolveInfluencerWallet: () => {
-    const input = App.getWalletInputValue();
-    const candidate = input || App.influencerWallet || "";
-    const looksLikeAddress = /^0x[a-fA-F0-9]{40}$/.test(candidate);
-    const isValidAddress = looksLikeAddress && web3.utils.isAddress(candidate);
-
-    if (!isValidAddress) {
-      return null;
-    }
-
-    return candidate;
-  },
-
-  persistInfluencerWallet: (wallet) => {
-    App.influencerWallet = wallet;
-    localStorage.setItem("influencerWallet", wallet);
-    $("#influencerWallet").val(wallet);
-    $("#walletSavedMsg").show().text(`Saved: ${wallet}`);
-  },
-
-  promptInfluencerWallet: () => {
-    const candidate = prompt("Enter influencer wallet address (0x...):", App.influencerWallet || "");
-    if (!candidate) return null;
-
-    const normalized = candidate
-      .replace(/[\u200B-\u200D\uFEFF]/g, "")
-      .trim()
-      .replace(/[.,;:!?]+$/, "");
-
-    const isValidAddress =
-      /^0x[a-fA-F0-9]{40}$/.test(normalized) && web3.utils.isAddress(normalized);
-
-    if (!isValidAddress) {
-      alert("That wallet address is invalid.");
-      return null;
-    }
-
-    App.persistInfluencerWallet(normalized);
-    return normalized;
-  },
-
-  ensureConnectedAccount: async () => {
-    const accounts = await window.ethereum.request({
-      method: "eth_requestAccounts",
-    });
-
-    App.account = accounts[0];
-    $("#account").text(App.account);
-    return App.account;
-  },
-
+  
   saveInfluencerWallet: async () => {
-    const wallet = App.resolveInfluencerWallet();
+  const rawInput = $('#influencerWallet').val() || "";
+  const input = rawInput
+    .replace(/[\u200B-\u200D\uFEFF]/g, "")
+    .trim()
+    .replace(/[.,;:!?]+$/, "");
 
-    if (!wallet) {
-      alert("Please enter a valid wallet address.");
-      return;
-    }
+  const looksLikeAddress = /^0x[a-fA-F0-9]{40}$/.test(input);
+  const isValidAddress = looksLikeAddress && web3.utils.isAddress(input);
 
-    App.persistInfluencerWallet(wallet);
-  },
+  if (!isValidAddress) {
+    alert("Please enter a valid wallet address.");
+    return;
+  }
+
+  App.influencerWallet = input;
+  localStorage.setItem("influencerWallet", input);
+
+  $("#influencerWallet").val(input);
+  $("#walletSavedMsg").show().text(`Saved: ${input}`);
+
+},
 
   toggleCompleted: async (e) => {
     App.setLoading(true);
@@ -374,25 +327,19 @@ $task.find(".releasePaymentBtn").attr("data-id", id);
 
   fundTask: async function(taskId, amountEth) {
     try {
-        const brand = await App.ensureConnectedAccount();
-        let influencer = App.resolveInfluencerWallet();
-        if (!influencer) {
-          influencer = App.promptInfluencerWallet();
-        }
+        const accounts = await web3.eth.getAccounts();
+        const brand = accounts[0];
+        const influencer = App.influencerWallet;
 
-        if (!influencer) {
-          return;
-        }
+if (!influencer || !web3.utils.isAddress(influencer)) {
+  alert("Influencer wallet not set. Please save a valid wallet first.");
+  return;
+}
 
-        const normalizedAmount = String(amountEth || "").trim();
-        if (!normalizedAmount || isNaN(normalizedAmount) || Number(normalizedAmount) <= 0) {
-          alert("Enter a valid ETH amount greater than 0.");
-          return;
-        }
 
-        const value = web3.utils.toWei(normalizedAmount, "ether");
+        const value = web3.utils.toWei(amountEth.toString(), "ether");
 
-        console.log(`Funding task ${taskId} with ${normalizedAmount} ETH`);
+        console.log(`Funding task ${taskId} with ${amountEth} ETH`);
         console.log("Brand:", brand);
         console.log("Influencer:", influencer);
 
@@ -406,7 +353,7 @@ $task.find(".releasePaymentBtn").attr("data-id", id);
 
     } catch (err) {
         console.error("FUND ERROR:", err);
-        alert(err?.message || "Payment failed.");
+        alert("Payment failed. Check console.");
     }
   },
   approveTask: async function(taskId) {

@@ -18,7 +18,6 @@ Influencer = {
     await Influencer.loadWeb3()
     await Influencer.loadAccount()
     await Influencer.loadContract()
-    Influencer.bindWalletEvents()
     await Influencer.render()
   },
 
@@ -142,15 +141,6 @@ if (paid) {
 html += `</div></div>`
 $("#inflTasks").append(html)
     }
-
-    if (summary.total === 0) {
-      $("#inflTasks").html(`
-        <div class="status-tag" style="display:block; padding:14px 16px;">
-          No tasks are assigned to ${Influencer.account} on this network yet. Tasks only show here after a brand funds them to this exact wallet address.
-        </div>
-      `)
-    }
-
     return summary
   },
 
@@ -312,14 +302,6 @@ $("#inflTasks").append(html)
       $(".infl-view").removeClass("active")
       $(viewMap[view]).addClass("active")
     })
-  },
-
-  bindWalletEvents: () => {
-    if (!window.ethereum || Influencer.walletEventsBound) return
-
-    window.ethereum.on("accountsChanged", () => window.location.reload())
-    window.ethereum.on("chainChanged", () => window.location.reload())
-    Influencer.walletEventsBound = true
   },
 
   submitProof: async (taskId) => {
