@@ -81,6 +81,7 @@ Influencer = {
       const approved = t.completed ?? t[2]
       const paid = t.paid ?? t[5]
       const value = Number(t.value ?? t[4])
+      const fundedEth = value > 0 ? window.web3.utils.fromWei(String(t.value ?? t[4]), "ether") : null
       const rejectionNote = t.rejectionNote ?? t[8]
 
       if (influencer !== Influencer.account.toLowerCase()) continue
@@ -95,6 +96,7 @@ let html = `
   <div class="task-col">
     <div class="task-id">#${id}</div>
     <div class="task-content">${content}</div>
+    ${fundedEth ? `<div class="task-id">Funded: ${fundedEth} ETH</div>` : ""}
   </div>
   <div class="task-col task-actions">
 `
