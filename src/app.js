@@ -291,29 +291,45 @@ $task.find(".releasePaymentBtn").attr("data-id", id);
     alert("Task created!");
     window.location.reload();
   },
-  
+
+  getWalletInputValue: () => {
+    const rawInput = $('#influencerWallet').val() || "";
+    return rawInput
+      .replace(/[\u200B-\u200D\uFEFF]/g, "")
+      .trim()
+      .replace(/[.,;:!?]+$/, "");
+  },
+
+  resolveInfluencerWallet: () => {
+    const input = App.getWalletInputValue();
+    const candidate = input || App.influencerWallet || "";
+    const looksLikeAddress = /^0x[a-fA-F0-9]{40}$/.test(candidate);
+    const isValidAddress = looksLikeAddress && web3.utils.isAddress(candidate);
+
+    if (!isValidAddress) {
+      return null;
+    }
+
+    return candidate;
+  },
+
+  persistInfluencerWallet: (wallet) => {
+    App.influencerWallet = wallet;
+    localStorage.setItem("influencerWallet", wallet);
+    $("#influencerWallet").val(wallet);
+    $("#walletSavedMsg").show().text(`Saved: ${wallet}`);
+  },
+
   saveInfluencerWallet: async () => {
-  const rawInput = $('#influencerWallet').val() || "";
-  const input = rawInput
-    .replace(/[\u200B-\u200D\uFEFF]/g, "")
-    .trim()
-    .replace(/[.,;:!?]+$/, "");
+    const wallet = App.resolveInfluencerWallet();
 
-  const looksLikeAddress = /^0x[a-fA-F0-9]{40}$/.test(input);
-  const isValidAddress = looksLikeAddress && web3.utils.isAddress(input);
+    if (!wallet) {
+      alert("Please enter a valid wallet address.");
+      return;
+    }
 
-  if (!isValidAddress) {
-    alert("Please enter a valid wallet address.");
-    return;
-  }
-
-  App.influencerWallet = input;
-  localStorage.setItem("influencerWallet", input);
-
-  $("#influencerWallet").val(input);
-  $("#walletSavedMsg").show().text(`Saved: ${input}`);
-
-},
+    App.persistInfluencerWallet(wallet);
+  },
 
   toggleCompleted: async (e) => {
     App.setLoading(true);
@@ -329,13 +345,14 @@ $task.find(".releasePaymentBtn").attr("data-id", id);
     try {
         const accounts = await web3.eth.getAccounts();
         const brand = accounts[0];
-        const influencer = App.influencerWallet;
+        const influencer = App.resolveInfluencerWallet();
 
-if (!influencer || !web3.utils.isAddress(influencer)) {
+if (!influencer) {
   alert("Influencer wallet not set. Please save a valid wallet first.");
   return;
 }
 
+        App.persistInfluencerWallet(influencer);
 
         const value = web3.utils.toWei(amountEth.toString(), "ether");
 
