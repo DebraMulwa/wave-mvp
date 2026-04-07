@@ -96,7 +96,7 @@ let html = `
   <div class="task-col">
     <div class="task-id">#${id}</div>
     <div class="task-content">${content}</div>
-    ${fundedEth ? `<div class="task-id">Funded: ${fundedEth} ETH</div>` : ""}
+    ${fundedEth ? `<div class="funded-amount">Funded: ${fundedEth} ETH</div>` : ""}
   </div>
   <div class="task-col task-actions">
 `
