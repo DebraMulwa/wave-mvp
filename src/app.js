@@ -320,6 +320,37 @@ $task.find(".releasePaymentBtn").attr("data-id", id);
     $("#walletSavedMsg").show().text(`Saved: ${wallet}`);
   },
 
+  promptInfluencerWallet: () => {
+    const candidate = prompt("Enter influencer wallet address (0x...):", App.influencerWallet || "");
+    if (!candidate) return null;
+
+    const normalized = candidate
+      .replace(/[\u200B-\u200D\uFEFF]/g, "")
+      .trim()
+      .replace(/[.,;:!?]+$/, "");
+
+    const isValidAddress =
+      /^0x[a-fA-F0-9]{40}$/.test(normalized) && web3.utils.isAddress(normalized);
+
+    if (!isValidAddress) {
+      alert("That wallet address is invalid.");
+      return null;
+    }
+
+    App.persistInfluencerWallet(normalized);
+    return normalized;
+  },
+
+  ensureConnectedAccount: async () => {
+    const accounts = await window.ethereum.request({
+      method: "eth_requestAccounts",
+    });
+
+    App.account = accounts[0];
+    $("#account").text(App.account);
+    return App.account;
+  },
+
   saveInfluencerWallet: async () => {
     const wallet = App.resolveInfluencerWallet();
 
@@ -343,20 +374,25 @@ $task.find(".releasePaymentBtn").attr("data-id", id);
 
   fundTask: async function(taskId, amountEth) {
     try {
-        const accounts = await web3.eth.getAccounts();
-        const brand = accounts[0];
-        const influencer = App.resolveInfluencerWallet();
+        const brand = await App.ensureConnectedAccount();
+        let influencer = App.resolveInfluencerWallet();
+        if (!influencer) {
+          influencer = App.promptInfluencerWallet();
+        }
 
-if (!influencer) {
-  alert("Influencer wallet not set. Please save a valid wallet first.");
-  return;
-}
+        if (!influencer) {
+          return;
+        }
 
-        App.persistInfluencerWallet(influencer);
+        const normalizedAmount = String(amountEth || "").trim();
+        if (!normalizedAmount || isNaN(normalizedAmount) || Number(normalizedAmount) <= 0) {
+          alert("Enter a valid ETH amount greater than 0.");
+          return;
+        }
 
-        const value = web3.utils.toWei(amountEth.toString(), "ether");
+        const value = web3.utils.toWei(normalizedAmount, "ether");
 
-        console.log(`Funding task ${taskId} with ${amountEth} ETH`);
+        console.log(`Funding task ${taskId} with ${normalizedAmount} ETH`);
         console.log("Brand:", brand);
         console.log("Influencer:", influencer);
 
@@ -370,7 +406,7 @@ if (!influencer) {
 
     } catch (err) {
         console.error("FUND ERROR:", err);
-        alert("Payment failed. Check console.");
+        alert(err?.message || "Payment failed.");
     }
   },
   approveTask: async function(taskId) {
